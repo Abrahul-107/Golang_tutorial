@@ -115,4 +115,59 @@ func CopyFile(dstName, srcName string) (written int64, err error) {
 
 
 
+# Go Interfaces
+Go language interfaces are different from other languages. In Go language, the interface is a custom type that is used to specify a set of one or more method signatures and the interface is abstract, so you are not allowed to create an instance of the interface. But you are allowed to create a variable of an interface type and this variable can be assigned with a concrete type value that has the methods the interface requires. Or in other words, the interface is a collection of methods as well as it is a custom type.
 
+
+
+## Polymorphism
+
+Interfaces allow different types to be treated uniformly. Here's an example:
+
+```go
+type shape interface {
+    area() float64
+}
+
+type circle struct {
+    radius float64
+}
+
+func (c circle) area() float64 {
+    return 3.14 * c.radius * c.radius
+}
+
+type rectangle struct {
+    width, height float64
+}
+
+func (r rectangle) area() float64 {
+    return r.width * r.height
+}
+
+func printArea(s shape) {
+    fmt.Println("Area:", s.area())
+}
+func main() {
+    c := circle{radius: 5}
+    r := rectangle{width: 10, height: 5}
+    printArea(c)
+    printArea(r)
+}
+```
+
+
+## Decoupling Code
+Interfaces decouple the implementation from the interface definition:
+
+```go
+func writeTo(writer io.Writer, data string) {
+    writer.Write([]byte(data))
+}
+
+func main() {
+    writeTo(os.Stdout, "Hello, World!\n")
+    file, _ := os.Create("example.txt")
+    defer file.Close()
+    writeTo(file, "Hello, File!\)
+    }
